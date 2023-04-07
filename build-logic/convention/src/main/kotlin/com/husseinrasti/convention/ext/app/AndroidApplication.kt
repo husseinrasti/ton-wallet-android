@@ -23,6 +23,7 @@ import com.husseinrasti.convention.base.*
 import com.husseinrasti.convention.ext.findLibrary
 import com.husseinrasti.convention.ext.kapt
 import com.husseinrasti.convention.ext.kotlinOptions
+import com.husseinrasti.convention.ext.libs
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -67,7 +68,6 @@ internal fun Project.configureApplicationFlavor() {
 fun Project.androidApplication() {
     android {
         compileSdk = BuildAndroidConfig.COMPILE_SDK_VERSION
-        buildToolsVersion = BuildAndroidConfig.BUILD_TOOLS_VERSION
         defaultConfig.minSdk = BuildAndroidConfig.MIN_SDK_VERSION
         defaultConfig.targetSdk = BuildAndroidConfig.TARGET_SDK_VERSION
         defaultConfig.multiDexEnabled = true
@@ -109,6 +109,14 @@ fun Project.androidApplication() {
 
             // Set JVM target to 11
             jvmTarget = JavaVersion.VERSION_11.toString()
+        }
+
+        buildFeatures {
+            compose = true
+        }
+
+        composeOptions {
+            kotlinCompilerExtensionVersion = libs().findVersion("androidxComposeCompiler").get().toString()
         }
     }
 

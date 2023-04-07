@@ -30,13 +30,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("testImplementation", kotlin("test"))
                 add("androidTestImplementation", kotlin("test"))
 
-                add("implementation", findLibrary("coil.kt"))
-                add("implementation", findLibrary("coil.kt.compose"))
-
-                add("implementation", findLibrary("androidx.hilt.navigation.compose"))
-                add("implementation", findLibrary("androidx.lifecycle.runtimeCompose"))
-                add("implementation", findLibrary("androidx.lifecycle.viewModelCompose"))
-
                 add("implementation", findLibrary("kotlinx.coroutines.android"))
             }
         }

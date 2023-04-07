@@ -17,8 +17,10 @@
 package com.husseinrasti.convention.plugins
 
 import com.husseinrasti.convention.ext.app.androidApplication
+import com.husseinrasti.convention.ext.findLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -27,8 +29,23 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             pluginManager.apply("org.jetbrains.kotlin.android")
             pluginManager.apply("org.jetbrains.kotlin.kapt")
             pluginManager.apply("build.logic.android.hilt")
-            pluginManager.apply("build.logic.android.application.compose")
             androidApplication()
+            dependencies {
+                add("implementation", platform(findLibrary("androidx-compose-bom")))
+                add("androidTestImplementation", platform(findLibrary("androidx-compose-bom")))
+                add("implementation", findLibrary("coil.kt"))
+                add("implementation", findLibrary("coil.kt.compose"))
+                add("implementation", findLibrary("androidx.core.ktx"))
+                add("implementation", findLibrary("androidx.hilt.navigation.compose"))
+                add("implementation", findLibrary("androidx.activity.compose"))
+                add("implementation", findLibrary("androidx.compose.ui.tooling"))
+                add("implementation", findLibrary("androidx.compose.ui.util"))
+                add("implementation", findLibrary("androidx.compose.foundation"))
+                add("implementation", findLibrary("androidx.compose.runtime"))
+                add("implementation", findLibrary("androidx.compose.material"))
+                add("implementation", findLibrary("androidx.lifecycle.runtimeCompose"))
+                add("implementation", findLibrary("androidx.lifecycle.viewModelCompose"))
+            }
         }
     }
 }

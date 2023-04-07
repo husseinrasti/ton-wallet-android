@@ -11,8 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 rootProject.name = "TonWalletAndroid"
+
 include(":app")
+project(":app").buildFileName = "app.gradle.kts"

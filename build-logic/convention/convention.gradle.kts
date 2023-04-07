@@ -45,10 +45,6 @@ gradlePlugin {
             id = "build.logic.android.application"
             implementationClass = "com.husseinrasti.convention.plugins.AndroidApplicationConventionPlugin"
         }
-        create("buildLogicApplicationCompose") {
-            id = "build.logic.android.application.compose"
-            implementationClass = "com.husseinrasti.convention.plugins.AndroidApplicationComposeConventionPlugin"
-        }
         create("coreAndroidLibrary") {
             id = "build.logic.android.library"
             implementationClass = "com.husseinrasti.convention.plugins.AndroidLibraryConventionPlugin"
