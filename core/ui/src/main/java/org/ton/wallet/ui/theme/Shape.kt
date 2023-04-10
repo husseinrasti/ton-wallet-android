@@ -1,4 +1,4 @@
-package org.ton.wallet.app.ui.theme
+package org.ton.wallet.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
