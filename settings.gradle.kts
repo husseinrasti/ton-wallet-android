@@ -18,7 +18,12 @@ dependencyResolutionManagement {
 rootProject.name = "TonWalletAndroid"
 
 include(":app")
+
 include(":core:ui")
+
+include(":feature:create-wallet:ui")
+include(":feature:create-wallet:data")
+include(":feature:create-wallet:domain")
 
 
 fun renameBuildFileName(name: String, project: ProjectDescriptor) {
@@ -35,4 +40,3 @@ fun renameBuildFileName(name: String, project: ProjectDescriptor) {
 rootProject.children.forEach { project ->
     renameBuildFileName(project.name, project)
 }
-

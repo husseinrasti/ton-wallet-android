@@ -21,7 +21,11 @@ object BuildModules {
     const val APP = ":app"
 
     object Features {
-
+        object CreateWallet {
+            const val UI = ":feature:create-wallet:ui"
+            const val DATA = ":feature:create-wallet:data"
+            const val DOMAIN = ":feature:create-wallet:domain"
+        }
     }
 
     object Core {
