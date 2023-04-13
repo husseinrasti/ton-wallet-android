@@ -1,4 +1,4 @@
-package org.ton.wallet.ui.theme
+package org.ton.wallet.core.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

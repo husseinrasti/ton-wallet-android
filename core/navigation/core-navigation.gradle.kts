@@ -4,5 +4,5 @@ plugins {
 }
 
 android {
-    namespace = "org.ton.wallet.core.ui"
+    namespace = "org.ton.wallet.core.navigation"
 }

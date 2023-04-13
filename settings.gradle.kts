@@ -20,6 +20,7 @@ rootProject.name = "TonWalletAndroid"
 include(":app")
 
 include(":core:ui")
+include(":core:navigation")
 
 include(":feature:create-wallet:ui")
 include(":feature:create-wallet:data")
