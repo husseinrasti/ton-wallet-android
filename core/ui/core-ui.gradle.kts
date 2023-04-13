@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "org.ton.wallet.core.ui"
 }
+
+dependencies {
+    implementation(libs.lottie.compose)
+}

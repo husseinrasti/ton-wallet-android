@@ -10,6 +10,14 @@ private val ColorPalette = lightColors(
     primaryVariant = Color.LightGray,
     secondary = Color.Black,
     background = Color.White,
+    secondaryVariant = Color(0xFF339CEC),
+    surface = Color.White,
+    error = Color(0xFFFE3C30),
+    onPrimary = Color.Black,
+    onSecondary = Color.White,
+    onBackground = Color.Black,
+    onSurface = Color.Black,
+    onError = Color.White,
 )
 
 @Composable

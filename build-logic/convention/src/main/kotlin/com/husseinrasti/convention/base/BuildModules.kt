@@ -30,6 +30,7 @@ object BuildModules {
 
     object Core {
         const val UI = ":core:ui"
+        const val NAVIGATION = ":core:navigation"
         const val MODEL = ":core:model"
         const val NETWORK = ":core:network"
     }
