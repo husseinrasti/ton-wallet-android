@@ -25,8 +25,9 @@ object BuildModules {
     }
 
     object Core {
-        const val MODEL = ":core-model"
-        const val NETWORK = ":core-network"
+        const val UI = ":core:ui"
+        const val MODEL = ":core:model"
+        const val NETWORK = ":core:network"
     }
 
 }

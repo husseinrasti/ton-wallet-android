@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.ton.wallet.app.ui.theme.TonWalletTheme
+import org.ton.wallet.ui.theme.TonWalletTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    Text(
+        text = "Hello $name!",
+        color = MaterialTheme.colors.onBackground
+    )
 }
 
 @Preview(showBackground = true)

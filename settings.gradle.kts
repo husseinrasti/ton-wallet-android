@@ -18,4 +18,21 @@ dependencyResolutionManagement {
 rootProject.name = "TonWalletAndroid"
 
 include(":app")
-project(":app").buildFileName = "app.gradle.kts"
+include(":core:ui")
+
+
+fun renameBuildFileName(name: String, project: ProjectDescriptor) {
+    if (project.children.isEmpty()) {
+        println("$name.gradle.kts")
+        project.buildFileName = "$name.gradle.kts"
+    } else {
+        project.children.forEach { subProject ->
+            renameBuildFileName("$name-${subProject.name}", subProject)
+        }
+    }
+}
+
+rootProject.children.forEach { project ->
+    renameBuildFileName(project.name, project)
+}
+
