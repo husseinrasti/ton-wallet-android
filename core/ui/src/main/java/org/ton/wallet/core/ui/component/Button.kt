@@ -3,6 +3,8 @@ package org.ton.wallet.core.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -13,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import org.ton.wallet.core.ui.theme.TonWalletTheme
 
 
@@ -31,12 +34,15 @@ fun TonButton(
         disabledContentColor = MaterialTheme.colors.onSecondary
             .copy(alpha = ContentAlpha.disabled)
     ),
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = 32.dp,
+        vertical = 8.dp
+    ),
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.height(48.dp),
         enabled = enabled,
         border = border,
         colors = colors,
@@ -62,7 +68,6 @@ fun TonButton(
         disabledContentColor = MaterialTheme.colors.onSecondary
             .copy(alpha = ContentAlpha.disabled)
     ),
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
 ) {
     TonButton(
         onClick = onClick,
@@ -71,7 +76,6 @@ fun TonButton(
         border = border,
         colors = colors,
         shape = shape,
-        contentPadding = contentPadding,
     ) {
         Text(
             text = text,

@@ -25,7 +25,7 @@ import org.ton.wallet.feature.create.ui.R
 
 
 @Composable
-fun StartRoute(
+internal fun StartRoute(
     onClickNavigation: (NavigationOnClickEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -44,7 +44,7 @@ internal fun StartScreen(
         modifier = modifier,
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
         ) {
             val (container, createWallet, importWallet) = createRefs()
 
