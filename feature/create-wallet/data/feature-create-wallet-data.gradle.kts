@@ -10,4 +10,6 @@ android {
 
 dependencies {
     implementation(project(BuildModules.Features.CreateWallet.DOMAIN))
+
+    implementation(libs.ton.kotlin)
 }

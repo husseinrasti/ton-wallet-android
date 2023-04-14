@@ -131,7 +131,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-ton = { group = "org.ton", name = "ton-kotlin", version.ref = "ton" }
+ton-kotlin = { group = "org.ton", name = "ton-kotlin", version.ref = "ton" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
 
 # Dependencies of the included build-logic
