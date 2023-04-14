@@ -1,8 +1,8 @@
-package org.ton.wallet.feature.create.ui.start
+package org.ton.wallet.feature.create.ui.congrats
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,28 +15,49 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import org.ton.wallet.core.navigation.NavigateImportWallet
+import org.ton.wallet.core.navigation.NavigateCreateWallet
 import org.ton.wallet.core.navigation.NavigationEvent
 import org.ton.wallet.core.ui.component.TonButton
 import org.ton.wallet.core.ui.component.TonLottieAnimation
+import org.ton.wallet.core.ui.component.TonTopBar
 import org.ton.wallet.core.ui.theme.TonWalletTheme
 import org.ton.wallet.feature.create.ui.R
-import org.ton.wallet.feature.create.ui.navigation.RouterCreateWallet
 
 
 @Composable
-internal fun StartRoute(
+internal fun CongratsRoute(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    StartScreen(
+    CongratsScreenScaffold(
         onClickNavigation = onClickNavigation,
         modifier = modifier
     )
 }
 
 @Composable
-internal fun StartScreen(
+internal fun CongratsScreenScaffold(
+    onClickNavigation: (NavigationEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        topBar = {
+            TonTopBar(
+                isBack = true,
+                onClickBack = onClickNavigation
+            )
+        },
+        content = {
+            CongratsScreen(
+                onClickNavigation = onClickNavigation,
+                modifier = modifier.padding(it)
+            )
+        }
+    )
+}
+
+@Composable
+internal fun CongratsScreen(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -46,12 +67,12 @@ internal fun StartScreen(
         ConstraintLayout(
             modifier = Modifier.fillMaxSize(),
         ) {
-            val (tonInfo, button) = createRefs()
+            val (container, button) = createRefs()
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.constrainAs(tonInfo) {
+                modifier = Modifier.constrainAs(container) {
                     top.linkTo(parent.top, margin = 32.dp)
                     end.linkTo(parent.end, margin = 16.dp)
                     start.linkTo(parent.start, margin = 16.dp)
@@ -59,7 +80,7 @@ internal fun StartScreen(
                 }
             ) {
                 TonLottieAnimation(
-                    lottieCompositionSpec = LottieCompositionSpec.Asset("anim/start.json"),
+                    lottieCompositionSpec = LottieCompositionSpec.Asset("anim/congratulations.json"),
                     modifier = Modifier.size(128.dp)
                 )
 
@@ -71,7 +92,7 @@ internal fun StartScreen(
                                 vertical = 8.dp
                             )
                         ),
-                    text = stringResource(id = R.string.title_ton_wallet),
+                    text = stringResource(id = R.string.title_congratulations),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body1.copy(fontSize = 24.sp),
@@ -80,39 +101,23 @@ internal fun StartScreen(
                 Text(
                     modifier = Modifier
                         .padding(PaddingValues(horizontal = 16.dp)),
-                    text = stringResource(id = R.string.desc_ton_wallet),
+                    text = stringResource(id = R.string.desc_congratulations),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.caption,
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            TonButton(
+                text = stringResource(id = R.string.btn_proceed),
                 modifier = Modifier.constrainAs(button) {
-                    top.linkTo(tonInfo.bottom)
+                    top.linkTo(container.bottom, margin = 16.dp)
                     end.linkTo(parent.end, margin = 16.dp)
                     start.linkTo(parent.start, margin = 16.dp)
-                    bottom.linkTo(parent.bottom)
-                }
-            ) {
-                TonButton(
-                    text = stringResource(id = R.string.btn_create_my_wallet),
-                    modifier = Modifier.padding(16.dp),
-                    onClick = { onClickNavigation(RouterCreateWallet.Congratulations) }
-                )
-
-                Text(
-                    text = stringResource(id = R.string.btn_import_existing_wallet),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable { onClickNavigation(NavigateImportWallet) },
-                    color = MaterialTheme.colors.secondaryVariant,
-                    style = MaterialTheme.typography.button,
-                )
-            }
+                    bottom.linkTo(parent.bottom, margin = 32.dp)
+                },
+                onClick = { onClickNavigation(NavigateCreateWallet) }
+            )
 
         }
     }
@@ -121,8 +126,8 @@ internal fun StartScreen(
 
 @Preview(heightDp = 800, widthDp = 480)
 @Composable
-fun StartScreenPreview() {
+fun CongratsScreenPreview() {
     TonWalletTheme {
-        StartScreen(onClickNavigation = {})
+        CongratsScreenScaffold(onClickNavigation = {})
     }
 }
