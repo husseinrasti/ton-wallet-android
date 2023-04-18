@@ -1,6 +1,6 @@
 package org.ton.wallet.feature.create.data.repository
 
-import org.ton.mnemonic.Mnemonic
+import org.ton.wallet.core.ton.sdk.mnemonic.Mnemonic
 import org.ton.wallet.feature.create.domain.repository.CreateWalletRepository
 import javax.inject.Inject
 
