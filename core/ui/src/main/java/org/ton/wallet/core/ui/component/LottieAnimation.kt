@@ -16,11 +16,11 @@ fun TonLottieAnimation(
     lottieCompositionSpec: LottieCompositionSpec,
     modifier: Modifier = Modifier,
     isPlaying: Boolean = true,
-    restartOnPlay: Boolean = true,
+    restartOnPlay: Boolean = false,
     reverseOnRepeat: Boolean = false,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
-    iterations: Int = LottieConstants.IterateForever,
+    iterations: Int = 1,
 ) {
     val composition by rememberLottieComposition(lottieCompositionSpec)
     val progress by animateLottieCompositionAsState(

@@ -37,6 +37,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 add("implementation", findLibrary("androidx.core.ktx"))
                 add("implementation", findLibrary("androidx.hilt.navigation.compose"))
                 add("implementation", findLibrary("androidx.activity.compose"))
+                add("implementation", findLibrary("androidx.navigation.compose"))
                 add("implementation", findLibrary("androidx.compose.ui.tooling"))
                 add("implementation", findLibrary("androidx.compose.ui.util"))
                 add("implementation", findLibrary("androidx.compose.foundation"))

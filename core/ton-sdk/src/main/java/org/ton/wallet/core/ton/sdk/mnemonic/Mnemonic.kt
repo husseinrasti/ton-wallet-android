@@ -1,8 +1,8 @@
 package org.ton.wallet.core.ton.sdk.mnemonic
 
+import android.util.Log
 import kotlinx.coroutines.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 private val MnemonicGeneratorCoroutineName = CoroutineName("mnemonic-generator")
@@ -13,29 +13,21 @@ object Mnemonic {
 
     private fun mnemonicWords(): List<String> = MNEMONIC_WORD_LIST
 
-    @OptIn(DelicateCoroutinesApi::class)
     suspend fun generate(
+        dispatcher: CoroutineContext,
         wordCount: Int = DEFAULT_WORD_COUNT,
         wordlist: List<String> = mnemonicWords(),
         random: Random = SecureRandom
-    ): List<String> = suspendCancellableCoroutine { continuation ->
-        GlobalScope.launch(
-            Dispatchers.Default + MnemonicGeneratorCoroutineName
-        ) {
-            try {
-                val mnemonic = Array(wordCount) { "" }
-                val weakRandom = Random(random.nextLong())
-                while (continuation.isActive) {
-                    repeat(wordCount) { i ->
-                        mnemonic[i] = wordlist.random(weakRandom)
-                    }
-                    continuation.resume(mnemonic.toList())
-                    break
-                }
-            } catch (e: Throwable) {
-                continuation.resumeWithException(e)
-            }
+    ): List<String> = withContext(dispatcher + MnemonicGeneratorCoroutineName) {
+        val mnemonic = Array(wordCount) { "" }
+        val weakRandom = Random(random.nextLong())
+        repeat(wordCount) { i ->
+            val word = wordlist.random(weakRandom)
+            Log.i("TAG", "generate word: $word")
+            mnemonic[i] = word
         }
+        Log.i("TAG", "generate list: $mnemonic")
+        mnemonic.toList()
     }
 
 }

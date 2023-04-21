@@ -14,5 +14,6 @@ dependencies {
     implementation(project(BuildModules.Core.NAVIGATION))
     implementation(project(BuildModules.Features.CreateWallet.DOMAIN))
 
+    implementation(libs.androidx.compose.material3)
     implementation(libs.lottie.compose)
 }

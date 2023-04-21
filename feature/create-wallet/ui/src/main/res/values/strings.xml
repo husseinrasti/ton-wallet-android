@@ -14,4 +14,7 @@
         To be able to always have access to it, please write down secret words and set up a secure passcode.
     </string>
     <string name="btn_proceed">Proceed</string>
+    <string name="title_your_recovery_phrase">Your Recovery Phrase</string>
+    <string name="desc_your_recovery_phrase">Write down these 24 words in this exact order and keep them in a secure place. Do not share this list with anyone. If you lose it, you will irrevocably lose access to your TON account.</string>
+    <string name="btn_done">Done</string>
 </resources>

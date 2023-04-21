@@ -5,4 +5,6 @@ import org.ton.wallet.core.navigation.NavigationEvent
 sealed interface RouterCreateWallet : NavigationEvent {
     object Start : RouterCreateWallet
     object Congratulations : RouterCreateWallet
+    object GeneratePhrase : RouterCreateWallet
+
 }

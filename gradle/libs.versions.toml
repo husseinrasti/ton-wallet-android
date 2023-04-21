@@ -8,6 +8,7 @@ androidxBrowser = "1.4.0"
 androidxComposeBom = "2023.03.00"
 androidxComposeCompiler = "1.4.1"
 androidxComposeMaterial = "1.4.0"
+androidxComposeMaterial3 = "1.0.1"
 androidxComposeRuntimeTracing = "1.0.0-alpha01"
 androidxConstraintLayoutCompose = "1.0.1"
 androidxCore = "1.9.0"
@@ -69,6 +70,8 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxComposeMaterial" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }

@@ -1,26 +1,75 @@
 package org.ton.wallet.core.ui.component
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import org.ton.wallet.core.navigation.NavigateUp
-import org.ton.wallet.core.navigation.NavigationEvent
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun TonTopBar(
+fun TonTopAppBar(
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    contentColor: Color = contentColorFor(backgroundColor),
+    elevation: Dp = AppBarDefaults.TopAppBarElevation
+) {
+    TopAppBar(
+        navigationIcon = navigationIcon,
+        title = title,
+        modifier = modifier,
+        actions = actions,
+        contentColor = contentColor,
+        elevation = elevation
+    )
+}
+
+@Composable
+fun TonTopAppBar(
+    modifier: Modifier = Modifier,
+    title: String = "",
+    icon: ImageVector = Icons.Default.ArrowBack,
+    onClickNavigation: () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {},
+    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    contentColor: Color = contentColorFor(backgroundColor),
+    elevation: Dp = AppBarDefaults.TopAppBarElevation
+) {
+    TonTopAppBar(
+        navigationIcon = {
+            IconToolbar(
+                onClick = onClickNavigation,
+                icon = icon
+            )
+        },
+        title = {
+            if (title.isNotEmpty()) {
+                TextToolbar(title = title)
+            }
+        },
+        modifier = modifier,
+        actions = actions,
+        contentColor = contentColor,
+        elevation = elevation
+    )
+}
+
+@Composable
+fun TonTopAppBar(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = AppBarDefaults.TopAppBarElevation,
     contentPadding: PaddingValues = AppBarDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -33,41 +82,61 @@ fun TonTopBar(
 }
 
 @Composable
-fun TonTopBar(
-    isBack: Boolean,
+fun TonTopAppBar(
     modifier: Modifier = Modifier,
     title: String = "",
-    onClickBack: (NavigationEvent) -> Unit = {},
+    icon: ImageVector = Icons.Default.ArrowBack,
+    onClickBack: () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = AppBarDefaults.TopAppBarElevation,
     contentPadding: PaddingValues = AppBarDefaults.ContentPadding,
 ) {
-    TonTopBar(
+    TonTopAppBar(
         modifier = modifier,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         elevation = elevation,
         contentPadding = contentPadding,
     ) {
-        if (isBack) {
-            IconButton(onClick = {
-                onClickBack(NavigateUp)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        }
+        IconToolbar(
+            onClick = onClickBack,
+            icon = icon
+        )
 
         if (title.isNotEmpty()) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.body2,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.onSurface,
-            )
+            TextToolbar(title = title)
         }
     }
+}
+
+
+@Composable
+private fun IconToolbar(
+    onClick: () -> Unit = {},
+    icon: ImageVector
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(16.dp)
+            .size(24.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
+@Composable
+private fun TextToolbar(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.body2,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.onSurface,
+    )
 }

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import org.ton.wallet.core.navigation.NavigateImportWallet
 import org.ton.wallet.core.navigation.NavigationEvent
 import org.ton.wallet.core.ui.component.TonButton
@@ -36,7 +37,7 @@ internal fun StartRoute(
 }
 
 @Composable
-internal fun StartScreen(
+private fun StartScreen(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -60,7 +61,9 @@ internal fun StartScreen(
             ) {
                 TonLottieAnimation(
                     lottieCompositionSpec = LottieCompositionSpec.Asset("anim/start.json"),
-                    modifier = Modifier.size(128.dp)
+                    modifier = Modifier.size(128.dp),
+                    restartOnPlay = true,
+                    iterations = LottieConstants.IterateForever,
                 )
 
                 Text(
@@ -121,7 +124,7 @@ internal fun StartScreen(
 
 @Preview(heightDp = 800, widthDp = 480)
 @Composable
-fun StartScreenPreview() {
+private fun StartScreenPreview() {
     TonWalletTheme {
         StartScreen(onClickNavigation = {})
     }
