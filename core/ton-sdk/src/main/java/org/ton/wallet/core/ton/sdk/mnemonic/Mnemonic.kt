@@ -1,6 +1,5 @@
 package org.ton.wallet.core.ton.sdk.mnemonic
 
-import android.util.Log
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
@@ -22,11 +21,8 @@ object Mnemonic {
         val mnemonic = Array(wordCount) { "" }
         val weakRandom = Random(random.nextLong())
         repeat(wordCount) { i ->
-            val word = wordlist.random(weakRandom)
-            Log.i("TAG", "generate word: $word")
-            mnemonic[i] = word
+            mnemonic[i] = wordlist.random(weakRandom)
         }
-        Log.i("TAG", "generate list: $mnemonic")
         mnemonic.toList()
     }
 

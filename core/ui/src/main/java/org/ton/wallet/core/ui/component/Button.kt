@@ -35,7 +35,7 @@ fun TonButton(
             .copy(alpha = ContentAlpha.disabled)
     ),
     contentPadding: PaddingValues = PaddingValues(
-        horizontal = 32.dp,
+        horizontal = 64.dp,
         vertical = 8.dp
     ),
     content: @Composable RowScope.() -> Unit,

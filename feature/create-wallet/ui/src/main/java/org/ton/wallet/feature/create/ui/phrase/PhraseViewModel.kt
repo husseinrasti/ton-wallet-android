@@ -14,15 +14,15 @@ class PhraseViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PhraseUiState>(PhraseUiState.Loading)
-    val uiState = _uiState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = _uiState.value
-    )
+    val uiState = _uiState.asStateFlow()
 
-    fun getMnemonic() {
+    init {
+        getMnemonic()
+    }
+
+    private fun getMnemonic() {
         viewModelScope.launch {
-            getMnemonicUseCase.invoke().fold(
+            getMnemonicUseCase().fold(
                 onSuccess = { wordList ->
                     _uiState.update { PhraseUiState.Success(wordList) }
                 },

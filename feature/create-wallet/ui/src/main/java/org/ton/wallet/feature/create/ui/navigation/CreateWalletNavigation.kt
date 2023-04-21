@@ -2,6 +2,7 @@ package org.ton.wallet.feature.create.ui.navigation
 
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import org.ton.wallet.core.navigation.NavigateUp
 import org.ton.wallet.core.navigation.NavigationEvent
 import org.ton.wallet.feature.create.ui.congrats.CongratsRoute
 import org.ton.wallet.feature.create.ui.phrase.GeneratePhraseRoute
@@ -42,7 +43,13 @@ fun NavGraphBuilder.createWalletGraph(
             })
         }
         composable(route = generatePhraseScreenRoute) {
-            GeneratePhraseRoute(onClickNavigation = onClickNavigation)
+            GeneratePhraseRoute(onClickNavigation = { event ->
+                if (event is NavigateUp) {
+                    navController.popBackStack()
+                } else {
+                    onClickNavigation(event)
+                }
+            })
         }
     }
 }

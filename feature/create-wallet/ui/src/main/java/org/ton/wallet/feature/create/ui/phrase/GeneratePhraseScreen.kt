@@ -2,12 +2,6 @@ package org.ton.wallet.feature.create.ui.phrase
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import org.ton.wallet.core.navigation.NavigateUp
@@ -32,6 +27,10 @@ import org.ton.wallet.feature.create.ui.R
 import org.ton.wallet.feature.create.ui.navigation.RouterCreateWallet
 
 
+private const val DEFAULT_COLUMN_COUNT = 2
+private const val TITLE_FONT_SCALE_STARE = 1f
+private const val TITLE_FONT_SCALE_END = 0.66f
+
 private val headerHeight = 250.dp
 private val toolbarHeight = 56.dp
 
@@ -40,9 +39,6 @@ private val paddingMedium = 16.dp
 private val titlePaddingStart = 16.dp
 private val titlePaddingEnd = 72.dp
 
-private const val titleFontScaleStart = 1f
-private const val titleFontScaleEnd = 0.66f
-
 
 @Composable
 fun GeneratePhraseRoute(
@@ -50,8 +46,9 @@ fun GeneratePhraseRoute(
     modifier: Modifier = Modifier,
     viewModel: PhraseViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    viewModel.getMnemonic()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle(
+        minActiveState = Lifecycle.State.RESUMED
+    )
 
     GeneratePhraseScreen(
         onClickNavigation = onClickNavigation,
@@ -119,79 +116,81 @@ private fun Body(
     uiState: PhraseUiState,
     onClickNavigation: (NavigationEvent) -> Unit,
 ) {
-    LazyColumn(
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
             .verticalScroll(scroll)
     ) {
-        item {
-            Spacer(Modifier.height(headerHeight))
-            Text(
-                text = stringResource(R.string.desc_your_recovery_phrase),
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            Spacer(Modifier.height(16.dp))
-        }
+        Spacer(Modifier.height(headerHeight))
+        Text(
+            text = stringResource(R.string.desc_your_recovery_phrase),
+            style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.onSurface,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        Spacer(Modifier.height(32.dp))
 
         when (uiState) {
             is PhraseUiState.Success -> {
                 val wordList = uiState.wordList
-                gridItems(
+                GridMnemonic(
                     data = wordList,
-                    columnCount = 2,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(horizontal = 16.dp)
-                ) { index, item ->
-                    Text(
-                        text = "${index + 1}. $item",
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.onSurface,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
+                )
             }
             PhraseUiState.Loading -> {}
             PhraseUiState.Error -> {}
         }
-
-        item {
-            Spacer(Modifier.height(16.dp))
-            TonButton(
-                text = stringResource(id = R.string.btn_done),
-                onClick = { onClickNavigation(RouterCreateWallet.Congratulations) }
-            )
-            Spacer(Modifier.height(72.dp))
-        }
+        Spacer(Modifier.height(32.dp))
+        TonButton(
+            text = stringResource(id = R.string.btn_done),
+            onClick = { onClickNavigation(RouterCreateWallet.Congratulations) }
+        )
+        Spacer(Modifier.height(72.dp))
     }
 }
 
-fun <T> LazyListScope.gridItems(
-    data: List<T>,
-    columnCount: Int,
+@Composable
+private fun GridMnemonic(
+    data: List<String>,
     modifier: Modifier,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    itemContent: @Composable BoxScope.(Int, T) -> Unit,
+    columnCount: Int = DEFAULT_COLUMN_COUNT,
 ) {
-    val size = data.count()
-    val rows = if (size == 0) 0 else 1 + (size - 1) / columnCount
-    items(rows, key = { it.hashCode() }) { rowIndex ->
-        Row(
-            horizontalArrangement = horizontalArrangement,
-            modifier = modifier
-        ) {
+    val size = data.size
+    for (rowIndex in data.indices) {
+        Row(modifier = modifier) {
             for (columnIndex in 0 until columnCount) {
                 val itemIndex = rowIndex * columnCount + columnIndex
                 if (itemIndex < size) {
                     Box(
                         modifier = Modifier.weight(1F, fill = true),
-                        propagateMinConstraints = true
+                        propagateMinConstraints = true,
+                        contentAlignment = Alignment.Center
                     ) {
-                        itemContent(itemIndex, data[itemIndex])
+                        Row(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth(),
+                        ) {
+                            Text(
+                                text = "${itemIndex + 1}. ",
+                                style = MaterialTheme.typography.body2,
+                                color = MaterialTheme.colors.primaryVariant,
+                                textAlign = TextAlign.End,
+                                modifier = Modifier.weight(0.2F, fill = true),
+                            )
+                            Text(
+                                text = data[itemIndex],
+                                style = MaterialTheme.typography.body1,
+                                color = MaterialTheme.colors.onSurface,
+                                modifier = Modifier
+                                    .weight(1F, fill = true)
+                                    .padding(horizontal = 8.dp),
+                                textAlign = TextAlign.Start,
+                            )
+                        }
                     }
                 } else {
                     Spacer(Modifier.weight(1F, fill = true))
@@ -222,8 +221,8 @@ private fun Title(
                 val collapseFraction: Float = (scroll.value / collapseRange).coerceIn(0f, 1f)
 
                 val scaleXY = lerp(
-                    titleFontScaleStart.dp,
-                    titleFontScaleEnd.dp,
+                    TITLE_FONT_SCALE_STARE.dp,
+                    TITLE_FONT_SCALE_END.dp,
                     collapseFraction
                 )
 
