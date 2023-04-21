@@ -92,7 +92,7 @@ private fun CongratsScreen(
                         .padding(PaddingValues(horizontal = 16.dp)),
                     text = stringResource(id = R.string.title_congratulations),
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colors.secondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 24.sp),
                 )
                 Spacer(Modifier.height(8.dp))

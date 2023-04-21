@@ -67,24 +67,30 @@ private fun GeneratePhraseScreen(
 
     val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        Header(
-            scroll = scroll,
-            headerHeightPx = headerHeightPx,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(headerHeight)
-        )
-        Body(
-            scroll = scroll,
-            uiState = uiState,
-            onClickNavigation = onClickNavigation,
-        )
-        TonTopAppBar(
-            onClickNavigation = { onClickNavigation(NavigateUp) },
-            elevation = 0.dp
-        )
-        Title(scroll = scroll)
+    when (uiState) {
+        is PhraseUiState.Success -> {
+            Box(modifier = modifier.fillMaxSize()) {
+                Header(
+                    scroll = scroll,
+                    headerHeightPx = headerHeightPx,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(headerHeight)
+                )
+                Body(
+                    scroll = scroll,
+                    wordList = uiState.wordList,
+                    onClickNavigation = onClickNavigation,
+                )
+                TonTopAppBar(
+                    onClickNavigation = { onClickNavigation(NavigateUp) },
+                    elevation = 0.dp
+                )
+                Title(scroll = scroll)
+            }
+        }
+        PhraseUiState.Loading -> {}
+        PhraseUiState.Error -> {}
     }
 }
 
@@ -113,7 +119,7 @@ private fun Header(
 private fun Body(
     scroll: ScrollState,
     modifier: Modifier = Modifier,
-    uiState: PhraseUiState,
+    wordList: List<String>,
     onClickNavigation: (NavigationEvent) -> Unit,
 ) {
     Column(
@@ -132,21 +138,16 @@ private fun Body(
         )
         Spacer(Modifier.height(32.dp))
 
-        when (uiState) {
-            is PhraseUiState.Success -> {
-                val wordList = uiState.wordList
-                GridMnemonic(
-                    data = wordList,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
-            PhraseUiState.Loading -> {}
-            PhraseUiState.Error -> {}
-        }
+        GridMnemonic(data = wordList)
+
         Spacer(Modifier.height(32.dp))
         TonButton(
             text = stringResource(id = R.string.btn_done),
-            onClick = { onClickNavigation(RouterCreateWallet.Congratulations) }
+            onClick = { onClickNavigation(RouterCreateWallet.Congratulations) },
+            contentPadding = PaddingValues(
+                horizontal = 96.dp,
+                vertical = 8.dp
+            ),
         )
         Spacer(Modifier.height(72.dp))
     }
@@ -155,24 +156,31 @@ private fun Body(
 @Composable
 private fun GridMnemonic(
     data: List<String>,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
 ) {
     val size = data.size
     for (rowIndex in data.indices) {
-        Row(modifier = modifier) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             for (columnIndex in 0 until columnCount) {
                 val itemIndex = rowIndex * columnCount + columnIndex
                 if (itemIndex < size) {
                     Box(
                         modifier = Modifier.weight(1F, fill = true),
                         propagateMinConstraints = true,
-                        contentAlignment = Alignment.Center
                     ) {
                         Row(
                             modifier = Modifier
                                 .padding(8.dp)
                                 .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
                                 text = "${itemIndex + 1}. ",
@@ -184,7 +192,7 @@ private fun GridMnemonic(
                             Text(
                                 text = data[itemIndex],
                                 style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.onSurface,
+                                color = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .weight(1F, fill = true)
                                     .padding(horizontal = 8.dp),
@@ -211,7 +219,7 @@ private fun Title(
     Text(
         text = stringResource(id = R.string.title_your_recovery_phrase),
         textAlign = TextAlign.Center,
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colors.secondary,
         style = MaterialTheme.typography.body1.copy(fontSize = 24.sp),
         modifier = modifier
             .fillMaxWidth()

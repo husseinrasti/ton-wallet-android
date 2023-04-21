@@ -7,16 +7,16 @@ import androidx.compose.ui.graphics.Color
 
 private val ColorPalette = lightColors(
     primary = Color.White,
-    primaryVariant = Color.LightGray,
-    secondary = Color.Black,
-    background = Color.White,
-    secondaryVariant = Color(0xFF339CEC),
-    surface = Color.White,
-    error = Color(0xFFFE3C30),
     onPrimary = Color.Black,
+    primaryVariant = Color.Gray,
+    secondary = Color(0xFF222222),
     onSecondary = Color.White,
+    secondaryVariant = Color(0xFF339CEC),
+    background = Color.White,
     onBackground = Color.Black,
+    surface = Color.White,
     onSurface = Color.Black,
+    error = Color(0xFFFE3C30),
     onError = Color.White,
 )
 

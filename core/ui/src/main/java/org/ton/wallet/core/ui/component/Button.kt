@@ -68,6 +68,10 @@ fun TonButton(
         disabledContentColor = MaterialTheme.colors.onSecondary
             .copy(alpha = ContentAlpha.disabled)
     ),
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = 64.dp,
+        vertical = 8.dp
+    ),
 ) {
     TonButton(
         onClick = onClick,
@@ -76,6 +80,7 @@ fun TonButton(
         border = border,
         colors = colors,
         shape = shape,
+        contentPadding = contentPadding,
     ) {
         Text(
             text = text,

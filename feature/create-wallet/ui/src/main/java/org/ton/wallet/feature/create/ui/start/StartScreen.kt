@@ -76,7 +76,7 @@ private fun StartScreen(
                         ),
                     text = stringResource(id = R.string.title_ton_wallet),
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colors.secondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 24.sp),
                 )
 
