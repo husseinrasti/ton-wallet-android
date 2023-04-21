@@ -11,4 +11,5 @@ android {
 dependencies {
     implementation(project(BuildModules.Features.CreateWallet.DOMAIN))
     implementation(project(BuildModules.Core.TON_SKD))
+    implementation(project(BuildModules.Core.DAGGER_HILT))
 }

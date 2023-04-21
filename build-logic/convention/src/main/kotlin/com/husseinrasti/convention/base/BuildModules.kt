@@ -33,7 +33,7 @@ object BuildModules {
         const val TON_SKD = ":core:ton-sdk"
         const val NAVIGATION = ":core:navigation"
         const val MODEL = ":core:model"
-        const val NETWORK = ":core:network"
+        const val DAGGER_HILT = ":core:dagger-hilt"
     }
 
 }
