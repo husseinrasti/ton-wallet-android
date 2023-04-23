@@ -6,5 +6,6 @@ sealed interface RouterCreateWallet : NavigationEvent {
     object Start : RouterCreateWallet
     object Congratulations : RouterCreateWallet
     object GeneratePhrase : RouterCreateWallet
+    object TestPhrase : RouterCreateWallet
 
 }

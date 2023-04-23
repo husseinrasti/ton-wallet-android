@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +48,7 @@ private fun StartScreen(
         ConstraintLayout(
             modifier = Modifier.fillMaxSize(),
         ) {
-            val (tonInfo, button) = createRefs()
+            val (tonInfo, tonCreate) = createRefs()
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +57,7 @@ private fun StartScreen(
                     top.linkTo(parent.top, margin = 32.dp)
                     end.linkTo(parent.end, margin = 16.dp)
                     start.linkTo(parent.start, margin = 16.dp)
-                    bottom.linkTo(button.top, margin = 16.dp)
+                    bottom.linkTo(tonCreate.top, margin = 16.dp)
                 }
             ) {
                 TonLottieAnimation(
@@ -93,7 +94,7 @@ private fun StartScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.constrainAs(button) {
+                modifier = Modifier.constrainAs(tonCreate) {
                     top.linkTo(tonInfo.bottom)
                     end.linkTo(parent.end, margin = 16.dp)
                     start.linkTo(parent.start, margin = 16.dp)
@@ -106,15 +107,17 @@ private fun StartScreen(
                     onClick = { onClickNavigation(RouterCreateWallet.Congratulations) }
                 )
 
-                Text(
-                    text = stringResource(id = R.string.btn_import_existing_wallet),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable { onClickNavigation(NavigateImportWallet) },
-                    color = MaterialTheme.colors.secondaryVariant,
-                    style = MaterialTheme.typography.button,
-                )
+                TextButton(onClick = {
+                    onClickNavigation(NavigateImportWallet)
+                }) {
+                    Text(
+                        text = stringResource(id = R.string.btn_import_existing_wallet),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colors.secondaryVariant,
+                        style = MaterialTheme.typography.button,
+                    )
+                }
             }
 
         }

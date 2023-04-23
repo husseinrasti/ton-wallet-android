@@ -4,6 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -27,6 +28,7 @@ import org.ton.wallet.feature.create.ui.R
 import org.ton.wallet.feature.create.ui.navigation.RouterCreateWallet
 
 
+private const val REQUIRE_MILLISECOND_WRITE_PHRASE = 60000
 private const val DEFAULT_COLUMN_COUNT = 2
 private const val TITLE_FONT_SCALE_STARE = 1f
 private const val TITLE_FONT_SCALE_END = 0.66f
@@ -40,18 +42,51 @@ private val titlePaddingStart = 16.dp
 private val titlePaddingEnd = 72.dp
 
 
+private fun isTimeDiffOne(startTime: Long, currentTimeMillis: Long): Boolean {
+    return (currentTimeMillis - startTime) < REQUIRE_MILLISECOND_WRITE_PHRASE
+}
+
 @Composable
 fun GeneratePhraseRoute(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PhraseViewModel = hiltViewModel(),
 ) {
+
+    var showAlert by remember { mutableStateOf(false) }
+    val startTime by rememberSaveable { mutableStateOf(System.currentTimeMillis()) }
+    var doubleClickCounter by remember { mutableStateOf(0) }
+
+    if (showAlert) {
+        PhraseAlertDialog(
+            doubleClickCounter = doubleClickCounter,
+            onClickSkip = {
+                onClickNavigation(RouterCreateWallet.TestPhrase)
+            },
+            onClickOK = {
+                showAlert = false
+            },
+            onDismissRequest = {
+                showAlert = false
+            }
+        )
+    }
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(
         minActiveState = Lifecycle.State.RESUMED
     )
 
     GeneratePhraseScreen(
-        onClickNavigation = onClickNavigation,
+        onClickNavigation = { event ->
+            if (event is RouterCreateWallet.TestPhrase
+                && isTimeDiffOne(startTime, System.currentTimeMillis())
+            ) {
+                doubleClickCounter++
+                showAlert = true
+            } else {
+                onClickNavigation(event)
+            }
+        },
         modifier = modifier,
         uiState = uiState,
     )
@@ -80,7 +115,7 @@ private fun GeneratePhraseScreen(
                 Body(
                     scroll = scroll,
                     wordList = uiState.wordList,
-                    onClickNavigation = onClickNavigation,
+                    onClick = { onClickNavigation(RouterCreateWallet.TestPhrase) },
                 )
                 TonTopAppBar(
                     onClickNavigation = { onClickNavigation(NavigateUp) },
@@ -120,7 +155,7 @@ private fun Body(
     scroll: ScrollState,
     modifier: Modifier = Modifier,
     wordList: List<String>,
-    onClickNavigation: (NavigationEvent) -> Unit,
+    onClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -143,7 +178,7 @@ private fun Body(
         Spacer(Modifier.height(32.dp))
         TonButton(
             text = stringResource(id = R.string.btn_done),
-            onClick = { onClickNavigation(RouterCreateWallet.Congratulations) },
+            onClick = onClick,
             contentPadding = PaddingValues(
                 horizontal = 96.dp,
                 vertical = 8.dp
@@ -282,6 +317,61 @@ private fun Title(
     )
 }
 
+@Composable
+private fun PhraseAlertDialog(
+    doubleClickCounter: Int,
+    onDismissRequest: () -> Unit,
+    onClickSkip: () -> Unit,
+    onClickOK: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        buttons = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                if (doubleClickCounter >= 2) {
+                    TextButton(onClick = onClickSkip) {
+                        Text(
+                            text = stringResource(id = R.string.btn_skip),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(16.dp),
+                            color = MaterialTheme.colors.secondaryVariant,
+                            style = MaterialTheme.typography.button,
+                        )
+                    }
+                }
+                TextButton(onClick = onClickOK) {
+                    Text(
+                        text = stringResource(id = R.string.btn_ok_sorry),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colors.secondaryVariant,
+                        style = MaterialTheme.typography.button,
+                    )
+                }
+            }
+        },
+        title = {
+            Text(
+                text = stringResource(id = R.string.title_sure_done),
+                color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.body1.copy(fontSize = 20.sp),
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(id = R.string.msg_enough_time_write_words),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onSurface,
+            )
+        },
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.onSurface,
+    )
+}
 
 @Preview
 @Composable
@@ -294,6 +384,18 @@ private fun GeneratePhrasePreview() {
     }
 }
 
+@Preview
+@Composable
+private fun PhraseAlertDialogPreview() {
+    TonWalletTheme {
+        PhraseAlertDialog(
+            doubleClickCounter = 2,
+            onClickSkip = {},
+            onClickOK = {},
+            onDismissRequest = {}
+        )
+    }
+}
 
 private val fakeWordList = listOf(
     "abandon",

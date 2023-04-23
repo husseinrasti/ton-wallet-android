@@ -5,6 +5,7 @@ interface NavigationEvent {
 }
 
 object NavigateUp : NavigationEvent
+
 object NavigateCreateWallet : NavigationEvent
 
 object NavigateImportWallet : NavigationEvent

@@ -17,4 +17,8 @@
     <string name="title_your_recovery_phrase">Your Recovery Phrase</string>
     <string name="desc_your_recovery_phrase">Write down these 24 words in this exact order and keep them in a secure place. Do not share this list with anyone. If you lose it, you will irrevocably lose access to your TON account.</string>
     <string name="btn_done">Done</string>
+    <string name="btn_skip">Skip</string>
+    <string name="btn_ok_sorry">OK. sorry</string>
+    <string name="title_sure_done">Sure done?</string>
+    <string name="msg_enough_time_write_words">You didn’t have enough time to write these words down.</string>
 </resources>
