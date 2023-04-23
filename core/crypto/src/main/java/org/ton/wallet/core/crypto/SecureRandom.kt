@@ -1,4 +1,4 @@
-package org.ton.wallet.core.ton.sdk.mnemonic
+package org.ton.wallet.core.crypto
 
 import kotlin.random.Random
 

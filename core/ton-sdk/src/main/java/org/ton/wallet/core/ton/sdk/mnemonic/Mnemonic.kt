@@ -1,6 +1,7 @@
 package org.ton.wallet.core.ton.sdk.mnemonic
 
 import kotlinx.coroutines.*
+import org.ton.wallet.core.crypto.SecureRandom
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 

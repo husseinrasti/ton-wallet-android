@@ -23,6 +23,7 @@ include(":core:ui")
 include(":core:navigation")
 include(":core:ton-sdk")
 include(":core:dagger-hilt")
+include(":core:crypto")
 
 include(":feature:create-wallet:ui")
 include(":feature:create-wallet:data")

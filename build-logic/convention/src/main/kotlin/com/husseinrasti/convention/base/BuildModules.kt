@@ -34,6 +34,7 @@ object BuildModules {
         const val NAVIGATION = ":core:navigation"
         const val MODEL = ":core:model"
         const val DAGGER_HILT = ":core:dagger-hilt"
+        const val CRYPTO = ":core:crypto"
     }
 
 }
