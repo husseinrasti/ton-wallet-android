@@ -5,13 +5,15 @@ import androidx.navigation.compose.composable
 import org.ton.wallet.core.navigation.NavigateUp
 import org.ton.wallet.core.navigation.NavigationEvent
 import org.ton.wallet.feature.create.ui.congrats.CongratsRoute
-import org.ton.wallet.feature.create.ui.phrase.GeneratePhraseRoute
+import org.ton.wallet.feature.create.ui.phrase.recovery.RecoveryPhraseRoute
+import org.ton.wallet.feature.create.ui.phrase.test.TestPhraseRoute
 import org.ton.wallet.feature.create.ui.start.StartRoute
 
 const val createWalletRoute = "create_wallet_route"
 private const val startScreenRoute = "start_screen_route"
 private const val congratsScreenRoute = "congrats_screen_route"
 private const val generatePhraseScreenRoute = "generate_phrase_screen_route"
+private const val testPhraseScreenRoute = "test_phrase_screen_route"
 
 fun NavController.navigateToCreateWallet(navOptions: NavOptions? = null) {
     this.navigate(createWalletRoute, navOptions)
@@ -43,13 +45,22 @@ fun NavGraphBuilder.createWalletGraph(
             })
         }
         composable(route = generatePhraseScreenRoute) {
-            GeneratePhraseRoute(onClickNavigation = { event ->
-                if (event is NavigateUp) {
-                    navController.popBackStack()
-                } else {
-                    onClickNavigation(event)
+            RecoveryPhraseRoute(onClickNavigation = { event ->
+                when (event) {
+                    is NavigateUp -> {
+                        navController.popBackStack()
+                    }
+                    is RouterCreateWallet.TestPhrase -> {
+                        navController.navigate(testPhraseScreenRoute)
+                    }
+                    else -> {
+                        onClickNavigation(event)
+                    }
                 }
             })
+        }
+        composable(route = testPhraseScreenRoute) {
+            TestPhraseRoute(onClickNavigation = onClickNavigation)
         }
     }
 }

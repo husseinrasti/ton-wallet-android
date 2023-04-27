@@ -1,4 +1,4 @@
-package org.ton.wallet.feature.create.ui.phrase
+package org.ton.wallet.feature.create.ui.phrase.recovery
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -26,9 +26,9 @@ import org.ton.wallet.core.ui.component.TonTopAppBar
 import org.ton.wallet.core.ui.theme.TonWalletTheme
 import org.ton.wallet.feature.create.ui.R
 import org.ton.wallet.feature.create.ui.navigation.RouterCreateWallet
+import org.ton.wallet.feature.create.ui.util.isTimeDiffOne
 
 
-private const val REQUIRE_MILLISECOND_WRITE_PHRASE = 60000
 private const val DEFAULT_COLUMN_COUNT = 2
 private const val TITLE_FONT_SCALE_STARE = 1f
 private const val TITLE_FONT_SCALE_END = 0.66f
@@ -42,15 +42,11 @@ private val titlePaddingStart = 16.dp
 private val titlePaddingEnd = 72.dp
 
 
-private fun isTimeDiffOne(startTime: Long, currentTimeMillis: Long): Boolean {
-    return (currentTimeMillis - startTime) < REQUIRE_MILLISECOND_WRITE_PHRASE
-}
-
 @Composable
-fun GeneratePhraseRoute(
+internal fun RecoveryPhraseRoute(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PhraseViewModel = hiltViewModel(),
+    viewModel: RecoveryPhraseViewModel = hiltViewModel(),
 ) {
 
     var showAlert by remember { mutableStateOf(false) }
@@ -61,6 +57,7 @@ fun GeneratePhraseRoute(
         PhraseAlertDialog(
             doubleClickCounter = doubleClickCounter,
             onClickSkip = {
+                showAlert = false
                 onClickNavigation(RouterCreateWallet.TestPhrase)
             },
             onClickOK = {
@@ -76,7 +73,7 @@ fun GeneratePhraseRoute(
         minActiveState = Lifecycle.State.RESUMED
     )
 
-    GeneratePhraseScreen(
+    RecoveryPhraseScreen(
         onClickNavigation = { event ->
             if (event is RouterCreateWallet.TestPhrase
                 && isTimeDiffOne(startTime, System.currentTimeMillis())
@@ -93,17 +90,17 @@ fun GeneratePhraseRoute(
 }
 
 @Composable
-private fun GeneratePhraseScreen(
+private fun RecoveryPhraseScreen(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
-    uiState: PhraseUiState,
+    uiState: RecoveryPhraseUiState,
 ) {
     val scroll: ScrollState = rememberScrollState(0)
 
     val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
 
     when (uiState) {
-        is PhraseUiState.Success -> {
+        is RecoveryPhraseUiState.Success -> {
             Box(modifier = modifier.fillMaxSize()) {
                 Header(
                     scroll = scroll,
@@ -124,8 +121,8 @@ private fun GeneratePhraseScreen(
                 Title(scroll = scroll)
             }
         }
-        PhraseUiState.Loading -> {}
-        PhraseUiState.Error -> {}
+        RecoveryPhraseUiState.Loading -> {}
+        RecoveryPhraseUiState.Error -> {}
     }
 }
 
@@ -375,11 +372,11 @@ private fun PhraseAlertDialog(
 
 @Preview
 @Composable
-private fun GeneratePhrasePreview() {
+private fun RecoveryPhrasePreview() {
     TonWalletTheme {
-        GeneratePhraseScreen(
+        RecoveryPhraseScreen(
             onClickNavigation = {},
-            uiState = PhraseUiState.Success(fakeWordList)
+            uiState = RecoveryPhraseUiState.Success(fakeWordList)
         )
     }
 }

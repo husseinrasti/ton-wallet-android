@@ -21,4 +21,7 @@
     <string name="btn_ok_sorry">OK. sorry</string>
     <string name="title_sure_done">Sure done?</string>
     <string name="msg_enough_time_write_words">You didn’t have enough time to write these words down.</string>
+    <string name="title_test_time">Test Time!</string>
+    <string name="format_msg_test_time_to_enter_words">Let’s check that you wrote them down correctly. Please enter the words  %1$s, %2$s and %3$s.</string>
+    <string name="btn_continue">Continue</string>
 </resources>

@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(project(BuildModules.Core.UI))
+    implementation(project(BuildModules.Core.CRYPTO))
     implementation(project(BuildModules.Core.NAVIGATION))
     implementation(project(BuildModules.Features.CreateWallet.DOMAIN))
 

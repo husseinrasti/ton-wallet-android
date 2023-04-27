@@ -1,4 +1,4 @@
-package org.ton.wallet.feature.create.ui.phrase
+package org.ton.wallet.feature.create.ui.start
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,11 +9,11 @@ import org.ton.wallet.feature.create.domain.usecase.GetMnemonicUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class PhraseViewModel @Inject constructor(
+class StartViewModel @Inject constructor(
     private val getMnemonicUseCase: GetMnemonicUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<PhraseUiState>(PhraseUiState.Loading)
+    private val _uiState = MutableStateFlow<StartUiState>(StartUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -24,10 +24,10 @@ class PhraseViewModel @Inject constructor(
         viewModelScope.launch {
             getMnemonicUseCase().fold(
                 onSuccess = { wordList ->
-                    _uiState.update { PhraseUiState.Success(wordList) }
+                    _uiState.update { StartUiState.Success(wordList) }
                 },
                 onFailure = {
-                    _uiState.update { PhraseUiState.Error }
+                    _uiState.update { StartUiState.Error }
                 }
             )
         }
@@ -36,8 +36,8 @@ class PhraseViewModel @Inject constructor(
 }
 
 
-sealed interface PhraseUiState {
-    object Loading : PhraseUiState
-    object Error : PhraseUiState
-    data class Success(val wordList: List<String>) : PhraseUiState
+sealed interface StartUiState {
+    object Loading : StartUiState
+    object Error : StartUiState
+    data class Success(val wordList: List<String>) : StartUiState
 }

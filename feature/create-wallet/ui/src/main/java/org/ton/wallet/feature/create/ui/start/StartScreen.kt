@@ -1,6 +1,5 @@
 package org.ton.wallet.feature.create.ui.start
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface

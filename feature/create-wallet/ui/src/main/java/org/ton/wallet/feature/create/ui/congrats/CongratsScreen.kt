@@ -19,6 +19,7 @@ import org.ton.wallet.core.navigation.NavigateUp
 import org.ton.wallet.core.navigation.NavigationEvent
 import org.ton.wallet.core.ui.component.TonButton
 import org.ton.wallet.core.ui.component.TonLottieAnimation
+import org.ton.wallet.core.ui.component.TonSurface
 import org.ton.wallet.core.ui.component.TonTopAppBar
 import org.ton.wallet.core.ui.theme.TonWalletTheme
 import org.ton.wallet.feature.create.ui.R
@@ -62,7 +63,7 @@ private fun CongratsScreen(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    TonSurface(
         modifier = modifier,
     ) {
         ConstraintLayout(
@@ -83,8 +84,6 @@ private fun CongratsScreen(
                 TonLottieAnimation(
                     lottieCompositionSpec = LottieCompositionSpec.Asset("anim/congratulations.json"),
                     modifier = Modifier.size(128.dp),
-                    restartOnPlay = true,
-                    iterations = LottieConstants.IterateForever,
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
