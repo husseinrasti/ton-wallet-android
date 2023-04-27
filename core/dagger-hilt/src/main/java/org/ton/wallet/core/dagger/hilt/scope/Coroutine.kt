@@ -4,11 +4,11 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ApplicationDefaultScope
+annotation class ApplicationCoroutineDefaultScope
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ApplicationIoScope
+annotation class ApplicationCoroutineIoScope
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)

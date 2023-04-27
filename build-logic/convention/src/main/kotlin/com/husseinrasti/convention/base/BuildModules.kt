@@ -35,6 +35,7 @@ object BuildModules {
         const val MODEL = ":core:model"
         const val DAGGER_HILT = ":core:dagger-hilt"
         const val CRYPTO = ":core:crypto"
+        const val DATASTORE = ":core:datastore"
     }
 
 }

@@ -55,6 +55,7 @@ secrets = "2.0.1"
 turbine = "0.12.1"
 ton = "0.2.16"
 lottieCompose = "6.0.0"
+gson = "2.10.1"
 
 [libraries]
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanist" }
@@ -136,6 +137,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 ton-kotlin = { group = "org.ton", name = "ton-kotlin", version.ref = "ton" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
