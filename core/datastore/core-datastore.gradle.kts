@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(project(BuildModules.Core.DAGGER_HILT))
+    implementation(project(BuildModules.Core.CRYPTO))
 
     implementation(libs.androidx.dataStore.core)
     implementation(libs.androidx.dataStore.preferences)
