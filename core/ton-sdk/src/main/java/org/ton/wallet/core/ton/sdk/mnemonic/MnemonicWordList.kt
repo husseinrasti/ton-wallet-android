@@ -1,5 +1,7 @@
 package org.ton.wallet.core.ton.sdk.mnemonic
 
+fun getMnemonicWorldList() = MNEMONIC_WORD_LIST
+
 internal val MNEMONIC_WORD_LIST
     get() = listOf(
         "abandon",

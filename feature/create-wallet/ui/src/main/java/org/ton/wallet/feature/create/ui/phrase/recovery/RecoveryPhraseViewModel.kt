@@ -5,26 +5,26 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.ton.wallet.feature.create.domain.usecase.GetMnemonicUseCase
+import org.ton.wallet.feature.create.domain.usecase.GetPhrasesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class RecoveryPhraseViewModel @Inject constructor(
-    private val getMnemonicUseCase: GetMnemonicUseCase,
+    private val getPhrasesUseCase: GetPhrasesUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<RecoveryPhraseUiState>(RecoveryPhraseUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
-        getMnemonic()
+        getPhrases()
     }
 
-    private fun getMnemonic() {
+    private fun getPhrases() {
         viewModelScope.launch {
-            getMnemonicUseCase().fold(
-                onSuccess = { wordList ->
-                    _uiState.update { RecoveryPhraseUiState.Success(wordList) }
+            getPhrasesUseCase().fold(
+                onSuccess = { phrases ->
+                    _uiState.update { RecoveryPhraseUiState.Success(phrases) }
                 },
                 onFailure = {
                     _uiState.update { RecoveryPhraseUiState.Error }
@@ -39,5 +39,5 @@ class RecoveryPhraseViewModel @Inject constructor(
 sealed interface RecoveryPhraseUiState {
     object Loading : RecoveryPhraseUiState
     object Error : RecoveryPhraseUiState
-    data class Success(val wordList: List<String>) : RecoveryPhraseUiState
+    data class Success(val phrases: List<String>) : RecoveryPhraseUiState
 }

@@ -73,56 +73,65 @@ internal fun RecoveryPhraseRoute(
         minActiveState = Lifecycle.State.RESUMED
     )
 
-    RecoveryPhraseScreen(
-        onClickNavigation = { event ->
-            if (event is RouterCreateWallet.TestPhrase
-                && isTimeDiffOne(startTime, System.currentTimeMillis())
+    when (uiState) {
+        is RecoveryPhraseUiState.Success -> {
+            RecoveryPhraseScreen(
+                onClickNavigation = { event ->
+                    if (event is RouterCreateWallet.TestPhrase
+                        && isTimeDiffOne(startTime, System.currentTimeMillis())
+                    ) {
+                        doubleClickCounter++
+                        showAlert = true
+                    } else {
+                        onClickNavigation(event)
+                    }
+                },
+                modifier = modifier,
+                phrases = (uiState as RecoveryPhraseUiState.Success).phrases,
+            )
+        }
+
+        RecoveryPhraseUiState.Loading -> {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
             ) {
-                doubleClickCounter++
-                showAlert = true
-            } else {
-                onClickNavigation(event)
+                CircularProgressIndicator()
             }
-        },
-        modifier = modifier,
-        uiState = uiState,
-    )
+        }
+
+        RecoveryPhraseUiState.Error -> {}
+    }
 }
 
 @Composable
 private fun RecoveryPhraseScreen(
     onClickNavigation: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier,
-    uiState: RecoveryPhraseUiState,
+    phrases: List<String>,
 ) {
     val scroll: ScrollState = rememberScrollState(0)
 
     val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
 
-    when (uiState) {
-        is RecoveryPhraseUiState.Success -> {
-            Box(modifier = modifier.fillMaxSize()) {
-                Header(
-                    scroll = scroll,
-                    headerHeightPx = headerHeightPx,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(headerHeight)
-                )
-                Body(
-                    scroll = scroll,
-                    wordList = uiState.wordList,
-                    onClick = { onClickNavigation(RouterCreateWallet.TestPhrase) },
-                )
-                TonTopAppBar(
-                    onClickNavigation = { onClickNavigation(NavigateUp) },
-                    elevation = 0.dp
-                )
-                Title(scroll = scroll)
-            }
-        }
-        RecoveryPhraseUiState.Loading -> {}
-        RecoveryPhraseUiState.Error -> {}
+    Box(modifier = modifier.fillMaxSize()) {
+        Header(
+            scroll = scroll,
+            headerHeightPx = headerHeightPx,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(headerHeight)
+        )
+        Body(
+            scroll = scroll,
+            phrases = phrases,
+            onClick = { onClickNavigation(RouterCreateWallet.TestPhrase) },
+        )
+        TonTopAppBar(
+            onClickNavigation = { onClickNavigation(NavigateUp) },
+            elevation = 0.dp
+        )
+        Title(scroll = scroll)
     }
 }
 
@@ -151,7 +160,7 @@ private fun Header(
 private fun Body(
     scroll: ScrollState,
     modifier: Modifier = Modifier,
-    wordList: List<String>,
+    phrases: List<String>,
     onClick: () -> Unit,
 ) {
     Column(
@@ -170,7 +179,7 @@ private fun Body(
         )
         Spacer(Modifier.height(32.dp))
 
-        GridMnemonic(data = wordList)
+        GridPhrases(phrases = phrases)
 
         Spacer(Modifier.height(32.dp))
         TonButton(
@@ -186,13 +195,13 @@ private fun Body(
 }
 
 @Composable
-private fun GridMnemonic(
-    data: List<String>,
+private fun GridPhrases(
+    phrases: List<String>,
     modifier: Modifier = Modifier,
     columnCount: Int = DEFAULT_COLUMN_COUNT,
 ) {
-    val size = data.size
-    for (rowIndex in data.indices) {
+    val size = phrases.size
+    for (rowIndex in phrases.indices) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -222,7 +231,7 @@ private fun GridMnemonic(
                                 modifier = Modifier.weight(0.2F, fill = true),
                             )
                             Text(
-                                text = data[itemIndex],
+                                text = phrases[itemIndex],
                                 style = MaterialTheme.typography.body1,
                                 color = MaterialTheme.colors.secondary,
                                 modifier = Modifier
@@ -376,7 +385,7 @@ private fun RecoveryPhrasePreview() {
     TonWalletTheme {
         RecoveryPhraseScreen(
             onClickNavigation = {},
-            uiState = RecoveryPhraseUiState.Success(fakeWordList)
+            phrases = fakePhrases
         )
     }
 }
@@ -394,7 +403,7 @@ private fun PhraseAlertDialogPreview() {
     }
 }
 
-private val fakeWordList = listOf(
+private val fakePhrases = listOf(
     "abandon",
     "ability",
     "able",

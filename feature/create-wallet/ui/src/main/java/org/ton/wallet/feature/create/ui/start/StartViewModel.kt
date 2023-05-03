@@ -5,29 +5,30 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.ton.wallet.feature.create.domain.usecase.GetMnemonicUseCase
+import org.ton.wallet.feature.create.domain.usecase.GeneratePhrasesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val getMnemonicUseCase: GetMnemonicUseCase,
+    private val generatePhrasesUseCase: GeneratePhrasesUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<StartUiState>(StartUiState.Loading)
-    val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableSharedFlow<StartUiState>()
+    val uiState = _uiState.asSharedFlow()
 
-    init {
-        getMnemonic()
-    }
-
-    private fun getMnemonic() {
+    fun generatePhrases() {
         viewModelScope.launch {
-            getMnemonicUseCase().fold(
-                onSuccess = { wordList ->
-                    _uiState.update { StartUiState.Success(wordList) }
+            _uiState.emit(StartUiState.Loading)
+            generatePhrasesUseCase().fold(
+                onSuccess = { isSuccess ->
+                    _uiState.emit(
+                        if (isSuccess) StartUiState.Success
+                        else StartUiState.Error
+                    )
                 },
                 onFailure = {
-                    _uiState.update { StartUiState.Error }
+                    it.printStackTrace()
+                    _uiState.emit(StartUiState.Error)
                 }
             )
         }
@@ -37,7 +38,8 @@ class StartViewModel @Inject constructor(
 
 
 sealed interface StartUiState {
+    object Idle : StartUiState
     object Loading : StartUiState
     object Error : StartUiState
-    data class Success(val wordList: List<String>) : StartUiState
+    object Success : StartUiState
 }

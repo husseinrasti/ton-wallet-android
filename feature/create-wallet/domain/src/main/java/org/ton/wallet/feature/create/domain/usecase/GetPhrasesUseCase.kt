@@ -3,14 +3,15 @@ package org.ton.wallet.feature.create.domain.usecase
 import org.ton.wallet.feature.create.domain.repository.CreateWalletRepository
 import javax.inject.Inject
 
-interface GetMnemonicUseCase {
+interface GetPhrasesUseCase {
     suspend operator fun invoke(): Result<List<String>>
 }
 
-class GetMnemonicUseCaseImpl @Inject constructor(
+
+class GetPhrasesUseCaseImpl @Inject constructor(
     private val repository: CreateWalletRepository
-) : GetMnemonicUseCase {
+) : GetPhrasesUseCase {
     override suspend fun invoke(): Result<List<String>> {
-        return repository.getMnemonic()
+        return repository.getPhrases()
     }
 }

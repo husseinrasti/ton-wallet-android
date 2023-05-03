@@ -1,17 +1,14 @@
 package org.ton.wallet.core.datastore
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import org.ton.wallet.core.dagger.hilt.scope.ApplicationCoroutineIoScope
 import javax.inject.Singleton
 
 
@@ -23,16 +20,15 @@ object DataStoreModule {
 
     @Singleton
     @Provides
-    fun providePreferencesDataStore(
+    fun providePreferences(
         @ApplicationContext appContext: Context,
-        @ApplicationCoroutineIoScope coroutineScope: CoroutineScope,
-    ): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = {
-                appContext.preferencesDataStoreFile(SHARED_PREF_NAME)
-            },
-            scope = coroutineScope
-        )
-    }
+    ): SharedPreferences = EncryptedSharedPreferences.create(
+        SHARED_PREF_NAME,
+        MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+        appContext,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
 
 }

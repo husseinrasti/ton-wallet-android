@@ -1,14 +1,13 @@
 package org.ton.wallet.app.navigation
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import org.ton.wallet.core.navigation.NavigateUp
 import org.ton.wallet.core.navigation.NavigationEvent
-import org.ton.wallet.core.navigation.navigationSaver
 import org.ton.wallet.feature.create.ui.navigation.createWalletGraph
 import org.ton.wallet.feature.create.ui.navigation.createWalletRoute
 
@@ -23,8 +22,10 @@ fun TonNavHost(
         mutableStateOf(NavigationEvent.Idle)
     }
 
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
+
     when (navigationEvent) {
-        is NavigateUp -> navController.navigateUp()
+        is NavigateUp -> dispatcher.onBackPressed()
     }
 
     NavHost(
